@@ -1,0 +1,69 @@
+/* Dropdown container */
+.menu-tree {
+    min-width: 260px;
+}
+
+/* Parent label (non-clickable) */
+.menu-parent {
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    color: #212529;
+}
+
+/* Child list */
+.menu-children {
+    list-style: none;
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Items */
+.menu-children .dropdown-item {
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* Mobile friendly */
+@media (max-width: 991.98px) {
+    .menu-tree {
+        width: 100%;
+    }
+}
+
+/* ENABLED menus */
+.nav-link,
+.dropdown-item {
+    color: #212529; /* normal dark text */
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.nav-link:hover,
+.dropdown-item:hover {
+    color: #0d6efd; /* bootstrap primary hover */
+    background-color: #f8f9fa; /* light hover bg */
+}
+
+/* DISABLED menus */
+.nav-link.disabled-menu,
+.dropdown-item.disabled-menu,
+.menu-parent.disabled-menu {
+    color: #adb5bd !important;       /* grey text */
+    cursor: not-allowed !important;  /* no pointer */
+    pointer-events: none;            /* prevent clicks */
+    opacity: 0.6;                    /* faded look */
+    font-style: italic;               /* optional */
+}
+
+/* Highlight the selected row */
+tr.selected {
+    background-color: #d1e7fd; /* light blue */
+}
+
+tr.selected td {
+    font-weight: bold;
+}
+
+input[type="checkbox"][name$="-DELETE"] {
+    display: none;
+}

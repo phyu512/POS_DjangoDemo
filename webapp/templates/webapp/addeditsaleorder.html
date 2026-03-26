@@ -1,0 +1,153 @@
+{% extends 'webapp/layout.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h3 class="mb-0 h5 fw-bold">{{ title }}</h3>
+    </div>
+
+    <div class="card-body">
+        <form method="POST" novalidate>
+            {% csrf_token %}
+
+            <!-- ========================= -->
+            <!-- SALE ORDER HEADER -->
+            <!-- ========================= -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label">Customer</label>
+                    {{ form.customer }}
+                     {% if form.customer.errors %}
+                        <div class="text-danger small">
+                            {% for error in form.customer.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- ========================= -->
+            <!-- SALE ORDER DETAILS -->
+            <!-- ========================= -->
+            <hr>
+            <h5 class="fw-bold mb-3">Order Items</h5>
+
+            {{ formset.management_form }}
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle" id="items-table" data-get-price-url="{% url 'get_productprice' %}">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:40%">Product</th>
+                            <th style="width:15%">Quantity</th>
+                            <th style="width:20%">Price</th>
+                            <th style="width:20%">Subtotal</th>
+                            <th style="width:5%">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form in formset %}
+                            {% if not form.DELETE.value %}
+                                <tr class="item-row">
+                                {% else %}
+                                <tr class="item-row" style="display:none;">
+                                {% endif %}
+                                <td>
+                                    {{ form.product }}
+                                    {% if form.product.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.product.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ form.quantity }}
+                                    {% if form.quantity.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.quantity.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <input type="number"
+                                        class="form-control price-display"
+                                        value="{{ form.price.value|default:'' }}"
+                                        readonly>
+                                    {{ form.price }}
+                                </td>
+                                <td class="subtotal text-end">0.00</td>
+                                <td class="text-center">
+                                    {{ form.DELETE }}
+                                    <button type="button" class="btn btn-sm btn-danger remove-row">
+                                        ×
+                                    </button>
+                                </td>
+                            </tr>
+                        
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Hidden Empty Form Template -->
+                <table style="display:none;">
+                    <tbody>
+                        <tr id="empty-form-row" class="item-row" style="display:none;">
+                            <td>
+                                {{ formset.empty_form.product }}
+                            </td>
+                            <td>
+                                {{ formset.empty_form.quantity }}
+                            </td>
+                            <td>
+                                <input type="number" class="form-control price-display" readonly>
+                                {{ formset.empty_form.price }}
+                            </td>
+                            <td class="subtotal text-end">0.00</td>
+                            <td class="text-center">
+                                <input type="checkbox" name="form-__prefix__-DELETE" style="display:none;">
+                                <button type="button" class="btn btn-sm btn-danger remove-row">×</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add Row Button -->
+            <button type="button" class="btn btn-outline-primary btn-sm mb-3" id="add-row">
+                + Add Item
+            </button>
+
+            <!-- ========================= -->
+            <!-- TOTAL -->
+            <!-- ========================= -->
+            <div class="row justify-content-end">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 bg-light">
+                        <div class="d-flex justify-content-between">
+                            <strong>Total Amount:</strong>
+                            <strong id="total-amount">0.00</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================= -->
+            <!-- ACTION BUTTONS -->
+            <!-- ========================= -->
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+                <a href="{% url 'saleorder_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+            {{ product_prices|json_script:"product-price-map" }}
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'webapp/js/saleorder.js' %}"></script>
+{% endblock %}

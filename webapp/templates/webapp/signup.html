@@ -1,0 +1,78 @@
+{% extends "webapp/auth.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="col-md-7 col-lg-8"> 
+    <form method="POST">
+        {% csrf_token %}
+        <h4 class="mb-3">Sign Up</h4>
+        <hr class="my-4">
+        <div class="row mb-4 g-3">
+            <div class="col-sm-6">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+                {% if form.first_name.error %}
+                    <div class="alert alert-danger">
+                        {% for error in form.first_name.error %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-sm-6">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+                {% if form.last_name.error %}
+                    <div class="alert alert-danger">
+                        {% for error in form.last_name.error %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-12">
+                 {{ form.username.label_tag }}
+                {{ form.username }}
+                {% if form.username.error %}
+                    <div class="alert alert-danger">
+                        {% for error in form.username.error %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-12">
+                 {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {% if form.password1.error %}
+                    <div class="alert alert-danger">
+                        {% for error in form.password1.error %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-12">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {% if form.password2.error %}
+                    <div class="alert alert-danger">
+                        {% for error in form.password2.error %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <button class="w-100 btn btn-primary btn-lg" type="submit">Sign Up</button>
+        <hr class="my-4">
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+    </form>
+</div>
+{% endblock %}

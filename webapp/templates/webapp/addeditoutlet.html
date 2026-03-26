@@ -1,0 +1,32 @@
+{% extends 'webapp/layout.html' %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>{{title}}</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Outlet Name</label>
+            {{ form.outlet_name }}
+        </div>
+
+        <div class="mb-3">
+            <label>Location</label>
+            {{ form.location }}
+        </div>
+
+        <div class="mb-3">
+            <label>Short Location (3 letters)</label>
+            {{ form.short_location }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'outlet_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+
+</div>
+
+{% endblock %}

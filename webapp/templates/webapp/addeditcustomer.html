@@ -1,0 +1,38 @@
+{% extends 'webapp/layout.html' %}
+{% block title %}
+    {% if customer %}Edit Customer{% else %}Add Customer{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header"><h3>{{ title }}</h3></div>
+
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Customer Name</label>
+                {{ form.customer_name }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Phone</label>
+                {{ form.phone }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                {{ form.address }}
+            </div>
+            <button type="submit" class="btn btn-success">{{ button_text }}</button>
+            <a href="{% url 'customer_list' %}" class="btn btn-secondary">Back</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

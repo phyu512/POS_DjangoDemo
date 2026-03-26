@@ -1,0 +1,89 @@
+<!-- templates/layout.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}STAR LINK TRADING{% endblock %}</title>
+
+    {% load static %}
+    {% load menu_tags %}  <!-- load custom recursive tag -->
+
+    <link rel="stylesheet" href="{% static 'webapp/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'webapp/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'webapp/css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'webapp/css/layout.min.css' %}">
+</head>
+
+<body>
+
+<!-- <pre>
+{% for m in menus %}
+{{ m.name }}
+  {% for c in m.children.all %}
+  └── {{ c.name }}
+      {% for s in c.children.all %}
+      ├── {{ s.name }}
+      {% endfor %}
+  {% endfor %}
+{% endfor %}
+</pre>  -->
+
+<!-- TOP NAV BAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-3">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+            <img src="{% static 'webapp/images/star-logo.png' %}" height="30" class="me-2">
+            STAR LINK TRADING
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" 
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% render_menu menus %}
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-user-circle me-1"></i> {{ request.user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item text-danger" href="{% url 'signout' %}">
+                                <i class="fa fa-sign-out-alt me-1"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>
+
+<script src="{% static 'webapp/js/jquery-4.0.0.min.js' %}"></script>
+<script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+    const logoutUrl = "{% url 'signout' %}?timeout=1";
+</script>
+<script src="{% static 'webapp/js/layout.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

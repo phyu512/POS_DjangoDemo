@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DataPost{% endblock %}</title>
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'webapp/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'webapp/css/title.css' %}" />
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .auth-container {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+        .brand {
+            font-weight: bold;
+            font-size: 22px;
+        }
+        .brand span {
+            color: #e53935;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-light border-bottom">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{% static 'webapp/images/star-logo.png' %}"
+                 alt="Star Logo"
+                 height="40"
+                 class="me-2">
+            <span class="fw-bold">STAR LINK TRADING</span>
+        </a>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container auth-container">
+    {% block content %}
+    {% endblock %}
+</div>
+<!-- Footer -->
+<footer style="background-color:#f8f9fa; padding:15px 0; text-align:center; margin-top:50px;">
+    <div class="container">
+        <p style="margin:0; color:#6c757d;">
+            &copy; {{ current_year }} STAR LINK TRADING. All rights reserved.
+        </p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"></script>
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

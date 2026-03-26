@@ -1,0 +1,75 @@
+{% extends "webapp/layout.html" %}
+{% block content %}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0 h5 fw-bold">Inventory List</h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <form method="get" class="mb-4">
+            <div class="row g-2">
+                <div class="col-12 col-md-4">
+                    <input type="text" name="q" class="form-control" placeholder="Search for product or outlet..." value="{{ query }}">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fa fa-search"></i> Search
+                    </button>
+                </div>
+                <div class="col-12 col-sm-auto ms-sm-auto">
+                    <a href="{% url 'create_inventory' %}" class="btn btn-primary w-100">
+                        <i class="fa fa-plus"></i> New Inventory
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Product</th>
+                        <th>Outlet</th>
+                        <th>Quantity</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inv in inventories %}
+                    <tr>
+                        <td class="text-break" style="min-width: 100px;">{{ inv.inventory_id }}</td>
+                        <td class="fw-bold">{{ inv.product }}</td>
+                        <td>{{ inv.outlet }}</td>
+                        <td>
+                            <span class="badge {% if inv.quantity > 10 %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                                {{ inv.quantity }}
+                            </span>
+                        </td>
+                        <td class="text-nowrap text-center">
+                            <a href="{% url 'edit_inventory' inv.pk %}" class="btn btn-sm btn-warning me-1">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <form action="{% url 'delete_inventory' inv.pk %}" method="POST" class="d-inline m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this inventory?');">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">No inventory records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

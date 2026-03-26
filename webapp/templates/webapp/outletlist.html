@@ -1,0 +1,71 @@
+{% extends 'webapp/layout.html' %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Outlet List</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="get" class="mb-3">
+            <div class="row g-2">
+                <div class="col-12 col-md-4 col-lg-3">
+                    <input type="text" name="q" class="form-control" placeholder="Search for outlet" value="{{ query }}">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fa fa-search"></i> Search
+                    </button>
+                </div>
+                <div class="col-auto ms-auto">
+                    <a href="{% url 'create_outlet' %}" class="btn btn-primary w-100">
+                        <i class="fa fa-plus"></i> New Outlet
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Outlet ID</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Short Code</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for outlet in outlets %}
+                    <tr>
+                        <td class="text-break" style="min-width: 120px;">{{ outlet.outlet_id }}</td>
+                        <td>{{ outlet.outlet_name }}</td>
+                        <td>{{ outlet.location }}</td>
+                        <td>{{ outlet.short_location }}</td>
+                        <td class="text-nowrap text-center">
+                            <a href="{% url 'edit_outlet' outlet.pk %}" class="btn btn-sm btn-warning">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <form action="{% url 'delete_outlet' outlet.pk %}" method="POST" class="d-inline m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this outlet?');">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No outlets found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

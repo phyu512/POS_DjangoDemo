@@ -1,0 +1,61 @@
+{% load menu_tags %}
+
+{% for menu in menus %}
+    {% if not menu.parent %}
+        {# Top-level menu #}
+        {% if menu.children.exists %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle fw-medium {% if user|has_group:menu.groups.all %}text-dark{% else %}text-muted disabled-menu{% endif %}" 
+                   href="#" 
+                   role="button" 
+                   data-bs-toggle="dropdown"
+                   {% if not user|has_group:menu.groups.all %}onclick="return false;"{% endif %}>
+                    {% if menu.icon %}<i class="fas {{ menu.icon }} me-1"></i>{% endif %}
+                    {{ menu.name }}
+                </a>
+                <ul class="dropdown-menu p-2 shadow-sm menu-tree">
+                    {% include "webapp/menu_recursive.html" with menus=menu.children.all user=user %}
+                </ul>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                {% if user|has_group:menu.groups.all %}
+                    <a class="nav-link text-dark" href="{% url menu.url_name %}">
+                        {% if menu.icon %}<i class="fas {{ menu.icon }} me-1"></i>{% endif %}
+                        {{ menu.name }}
+                    </a>
+                {% else %}
+                    <a class="nav-link text-muted disabled-menu" href="#" onclick="return false;">
+                        {% if menu.icon %}<i class="fas {{ menu.icon }} me-1"></i>{% endif %}
+                        {{ menu.name }}
+                    </a>
+                {% endif %}
+            </li>
+        {% endif %}
+    {% else %}
+        {# Sub-level menus #}
+        <li class="menu-item">
+            {% if menu.children.exists %}
+                <div class="menu-parent {% if not user|has_group:menu.groups.all %}disabled-menu{% endif %}">
+                    {% if menu.icon %}<i class="fas {{ menu.icon }} me-1"></i>{% endif %}
+                    {{ menu.name }}
+                </div>
+                <ul class="menu-children">
+                    {% include "webapp/menu_recursive.html" with menus=menu.children.all user=user %}
+                </ul>
+            {% else %}
+                {% if user|has_group:menu.groups.all %}
+                    <a class="dropdown-item" href="{% url menu.url_name %}">
+                        {% if menu.icon %}<i class="fas {{ menu.icon }} me-1"></i>{% endif %}
+                        {{ menu.name }}
+                    </a>
+                {% else %}
+                    <a class="dropdown-item text-muted disabled-menu" href="#" onclick="return false;">
+                        {% if menu.icon %}<i class="fas {{ menu.icon }} me-1"></i>{% endif %}
+                        {{ menu.name }}
+                    </a>
+                {% endif %}
+            {% endif %}
+        </li>
+    {% endif %}
+{% endfor %}

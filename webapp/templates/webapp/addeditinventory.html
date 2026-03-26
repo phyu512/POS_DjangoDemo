@@ -1,0 +1,45 @@
+{% extends "webapp\layout.html" %}
+{% block content %}
+
+<h3>
+    {% if inventory %} Edit Inventory {% else %} Add Inventory {% endif %}
+</h3>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label>Product</label>
+        {{ form.product }}
+    </div>
+
+    <div class="mb-3">
+        <label>Outlet</label>
+        {{ form.outlet }}
+    </div> 
+
+    <div class="mb-3">
+        <label>Quantity</label>
+        {{ form.quantity }}
+    </div>
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'inventory_list' %}" class="btn btn-secondary">Back</a>
+</form>
+
+{% endblock %}

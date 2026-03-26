@@ -1,0 +1,15 @@
+{% extends "webapp/layout.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="col-md-7 col-lg-8"> 
+    <form method="POST">
+        {% csrf_token %}
+        <h4 class="mb-3">Edit Profile</h4>
+        <hr class="my-4">
+        {{ form.as_p }}
+        <button class="w-100 btn btn-primary btn-lg" type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

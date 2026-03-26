@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments (Crucial to exclude!)
+venv/
+env/
+ENV/
+.venv/
+
+# Database (Keep your local data local)
+*.sqlite3
+
+# Django sensitive settings
+.env
+local_settings.py
+
+# Static and Media files
+# (Usually kept out of Git; managed via storage or production builds)
+staticfiles/
+media/
+
+# IDE / Editor folders
+.vscode/
+.idea/
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
