@@ -12,8 +12,7 @@ A dynamic Point of Sale (POS) and trading system prototype built with Python Dja
 * **Security & Session Management:**
 	* **Auto-Logout:** Sessions expire after 3 minutes of inactivity to protect unattended terminals in a retail environment.
     * **URL Protection:** Unauthorized users attempting to access restricted links will find the links expired or inaccessible.
-* **User Lifecycle:**Supports new user sign-up, admin-led role assignment, and password reset functionality.
-
+    * **User Lifecycle:** Supports new user sign-up, admin-led role assignment, and password reset functionality.
 
 ##Getting Started & Testing
 | Role | Username | Password | Access Level |
